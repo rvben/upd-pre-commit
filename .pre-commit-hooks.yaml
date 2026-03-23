@@ -1,0 +1,19 @@
+- id: upd-check
+  name: upd check
+  description: Check for outdated dependencies using upd.
+  entry: upd --check
+  language: python
+  always_run: true
+  pass_filenames: false
+  stages: [pre-push]
+  require_serial: true
+
+- id: upd-check-major
+  name: upd check (major only)
+  description: Check for major (breaking) dependency updates using upd.
+  entry: upd --check --major
+  language: python
+  always_run: true
+  pass_filenames: false
+  stages: [pre-push]
+  require_serial: true
