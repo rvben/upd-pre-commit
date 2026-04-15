@@ -9,7 +9,7 @@ To use upd with pre-commit, add the following to your `.pre-commit-config.yaml`:
 ```yaml
 repos:
   - repo: https://github.com/rvben/upd-pre-commit
-    rev: v0.0.26
+    rev: v0.0.27
     hooks:
       - id: upd-check        # Fail if any dependencies are outdated
       - id: upd-check-major  # Fail only on major (breaking) updates
@@ -24,7 +24,7 @@ You can customize which ecosystems to check:
 ```yaml
 repos:
   - repo: https://github.com/rvben/upd-pre-commit
-    rev: v0.0.26
+    rev: v0.0.27
     hooks:
       - id: upd-check
         args: ['--lang', 'python', '--lang', 'rust']
