@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "upd-pre-commit"
-version = "0.1.5"
+version = "0.1.6"
 description = "Pre-commit hooks for upd, a fast multi-ecosystem dependency updater."
 authors = [
     { name = "Ruben J. Jongejan", email = "ruben.jongejan@gmail.com" }
@@ -14,7 +14,7 @@ requires-python = ">=3.9"
 license = "MIT"
 license-files = ["LICENSE"]
 dependencies = [
-    "upd-cli==0.1.5"
+    "upd-cli==0.1.6"
 ]
 
 [project.urls]
