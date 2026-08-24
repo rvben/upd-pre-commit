@@ -18,9 +18,11 @@ import urllib.request
 from packaging.version import parse as parse_version
 from pathlib import Path
 
+PYPI_PROJECT = "upd"
+
 
 def get_latest_upd_version():
-    url = "https://pypi.org/pypi/upd-cli/json"
+    url = f"https://pypi.org/pypi/{PYPI_PROJECT}/json"
     with urllib.request.urlopen(url) as response:
         data = response.read()
 
@@ -34,7 +36,7 @@ def get_latest_upd_version():
 
 def wait_for_pypi(version, max_wait=300, interval=15):
     """Wait until the version is available on PyPI. Returns True if available."""
-    url = f"https://pypi.org/pypi/upd-cli/{version}/json"
+    url = f"https://pypi.org/pypi/{PYPI_PROJECT}/{version}/json"
     elapsed = 0
     while elapsed < max_wait:
         try:
@@ -61,9 +63,9 @@ def update_pyproject_toml(version):
         rf'\1version = "{version}"',
         new_content,
     )
-    # Update the upd-cli dependency pin
+    # Migrate the legacy distribution name and update future canonical pins.
     new_content = re.sub(
-        r'"upd-cli([<>=!~]*[0-9\.\*]*)?"', f'"upd-cli=={version}"', new_content
+        r'"upd(?:-cli)?([<>=!~]*[0-9\.\*]*)?"', f'"upd=={version}"', new_content
     )
     if new_content != content:
         pyproject_path.write_text(new_content)
@@ -92,7 +94,7 @@ def main():
             sys.exit(1)
     else:
         version = get_latest_upd_version()
-        print(f"Latest upd-cli version from PyPI: {version}")
+        print(f"Latest upd version from PyPI: {version}")
 
     changed = False
     if update_pyproject_toml(version):
@@ -104,7 +106,9 @@ def main():
 
     if changed:
         subprocess.run(["git", "add", "pyproject.toml", "README.md"], check=True)
-        subprocess.run(["git", "commit", "-m", f"Mirror: {version}"], check=True)
+        subprocess.run(
+            ["git", "commit", "-m", f"chore: mirror upd {version}"], check=True
+        )
         subprocess.run(["git", "tag", f"v{version}"], check=True)
         print(f"Committed and tagged v{version}")
     else:
